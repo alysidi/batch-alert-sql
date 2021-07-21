@@ -1,6 +1,6 @@
 from . import config
 from psycopg2 import pool
-from proto import stormprep_pb2
+from proto import alertDetectionEvent_pb2
 import pytest
 import pandas as pd
 import json
@@ -18,7 +18,7 @@ def test_error_raise_query(db):
 
   with open('../sql/7000.7FFF.errors.raise.sql', 'r') as file:
     sql_query = file.read()
-    context = '000100071F39'
-    df = pd.read_sql_query(sql_query.format(context), db)
+    context = {'table':'pvlinks_test'}
+    df = pd.read_sql_query(sql_query.format(**context), db)
     result = json.loads(df.to_json(orient='records'))
   assert( context== result[0]['device_id'] )
