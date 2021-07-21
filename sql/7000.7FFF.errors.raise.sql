@@ -1,0 +1,1 @@
+select * from status.device_shadow where device_id='{}'
