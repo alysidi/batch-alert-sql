@@ -1,4 +1,4 @@
-SELECT parent.device_id, parent.host_rcpn, parent.device_type, t.count, json_agg(json_build_object('count', COALESCE(t.count,0))) as num_of_errors_in_window,
+SELECT parent.device_id, parent.host_rcpn, parent.device_type, json_agg(json_build_object('count', COALESCE(t.count,0))) as num_of_errors_in_window,
        'DEVICE_IN_ERROR_STATE' as alert_category,
         (NOW() - INTERVAL '12 hours') as transition_timestamp_utc
 FROM alert_chunk.{table} AS parent
