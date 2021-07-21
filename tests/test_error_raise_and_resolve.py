@@ -18,7 +18,7 @@ def dataframe_to_proto(df):
     result = json.loads(df.to_json(orient='records'))
     return json_format.Parse(json.dumps(result[0]), alert_detection.AlertDetectionEvent(), ignore_unknown_fields=False)
 
-
+# DEVICE_IN_ERROR_STATE raise
 def test_7000_7FFF_errors_raise_query(db):
   with open('../sql/7000.7FFF.errors.raise.sql', 'r') as file:
     sql_query = file.read()
@@ -30,7 +30,7 @@ def test_7000_7FFF_errors_raise_query(db):
   assert( alert_detection_proto.device_id != '' )
   assert( alert_detection_proto.num_of_errors_in_window[0].error_device_state != '' )
   
-
+# DEVICE_IN_ERROR_STATE resolve
 def test_7000_7FFF_errors_resolve_query(db):
   with open('../sql/7000.7FFF.errors.resolve.sql', 'r') as file:
     sql_query = file.read()
@@ -42,5 +42,30 @@ def test_7000_7FFF_errors_resolve_query(db):
   assert( alert_detection_proto.device_id != '' )
   assert( alert_detection_proto.num_of_errors_in_window[0].count == 0 )
 
+
+# DEVICE_OFFLINE raise
+def test_device_offline_raise_query(db):
+  with open('../sql/device.offline.raise.sql', 'r') as file:
+    sql_query = file.read()
+    context = {'table':'device_offline_raise'}
+
+    df = pd.read_sql_query(sql_query.format(**context), db)
+    alert_detection_proto = dataframe_to_proto(df)
+
+  assert( alert_detection_proto.device_id != '' )
+  assert( alert_detection_proto.num_of_errors_in_window[0].count > 0 )
+
+
+# DEVICE_OFFLINE resolve
+def test_device_offline_resolve_query(db):
+  with open('../sql/device.offline.resolve.sql', 'r') as file:
+    sql_query = file.read()
+    context = {'table':'errors_resolve_7000'}
+
+    df = pd.read_sql_query(sql_query.format(**context), db)
+    alert_detection_proto = dataframe_to_proto(df)
+
+  assert( alert_detection_proto.device_id != '' )
+  assert( alert_detection_proto.num_of_errors_in_window[0].count == 0 )
 
 

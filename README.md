@@ -17,6 +17,8 @@ The `num_of_errors_in_window` field will contain the result of `[{"count":0}]` w
 
 `./run_batch_tests_sql.sh` will pull the latest blitz repo, compile the alert detection protobuf and put it into the `proto` folder in the root. It will then run the pytest. This file needs to be run from the root folder. If you run pytest manually, run it from within the `tests` folder.
 
+`tests/bootstrap.sql` will populate the chunk tables needed to run the scripts
+
 ## Credentials
 
 Ensure your ENV variables are set for connecting to the Timescale Stage Replica DB

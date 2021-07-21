@@ -13,5 +13,3 @@ LEFT JOIN
 GROUP BY parent.device_id, parent.host_rcpn, parent.device_type, t.count;
 
 
-
-
